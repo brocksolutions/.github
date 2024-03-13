@@ -1,0 +1,20 @@
+{
+    "[markdown]": {
+        "editor.wordWrap": "on",
+        "editor.wordWrapColumn": 80,
+        "editor.rulers": [80],
+        "editor.lineNumbers": "on",
+        "editor.defaultFormatter": "yzhang.markdown-all-in-one",
+        "editor.tabSize": 4
+    },
+    "markdown.extension.toc.unorderedList.marker": "-",
+    "markdown.extension.toc.updateOnSave": false,
+    "prettier.tabWidth": 4,
+    "[yaml]": {
+        "editor.defaultFormatter": "redhat.vscode-yaml"
+    },
+    "[yml]": {
+        "editor.defaultFormatter": "redhat.vscode-yaml"
+    },
+    "files.insertFinalNewline": true
+}
