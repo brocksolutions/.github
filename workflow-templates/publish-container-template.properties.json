@@ -1,0 +1,12 @@
+{
+    "name": "Build and Publish Docker Container Workflow",
+    "description": "Build and publish a Docker container to the GHCR registry",
+    "iconName": "octicon container",
+    "categories": [
+        "deployment",
+        "Dockerfile"
+    ],
+    "filePatterns": [
+        "Dockerfile"
+    ]
+}

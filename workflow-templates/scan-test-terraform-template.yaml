@@ -1,0 +1,36 @@
+name: Terraform Scan and Test
+on:
+  push:
+    branches: [ $default-branch ]
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  scan-and-test:
+    name: Scan and test
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: read
+      statuses: write
+      id-token: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: brocksolutions/action-scan-terraform@v1
+
+      - name: Azure login
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID_STREAMS }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID_STREAMS }}
+
+      - uses: brocksolutions/action-test-terraform@v1
+        with:
+          github-pat: ${{ secrets.GH_PAT }}

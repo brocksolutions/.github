@@ -1,0 +1,21 @@
+name: Build, Test, and Publish a Docker Image
+
+on:
+  push:
+    branches: [$default-branch]
+      
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Build .NET App
+        uses: brocksolutions-pe/action-publish-container@main
+        with:
+          image-name: your-image-name
+          dockerfile-path: your-dockerfile-path/Dockerfile

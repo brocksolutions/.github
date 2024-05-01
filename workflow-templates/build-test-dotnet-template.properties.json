@@ -1,0 +1,12 @@
+{
+    "name": "Build and Test .NET",
+    "description": "Workflow that builds and tests your .NET project",
+    "iconName": "octicon gear",
+    "categories": [
+        "continuous-integration",
+        "testing"
+    ],
+    "filePatterns": [
+        "^.*\\.csproj$"
+    ]
+}
