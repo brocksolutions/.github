@@ -7,6 +7,6 @@
         "testing"
     ],
     "filePatterns": [
-        "^.*\\.csproj$"
+        "^.*\\.sln$"
     ]
 }
