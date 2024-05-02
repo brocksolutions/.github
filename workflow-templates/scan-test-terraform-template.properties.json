@@ -1,0 +1,13 @@
+{
+    "name": "Terraform Scan and Test",
+    "description": "Workflow that scans and tests your terraform code",
+    "iconName": "octicon beaker",
+    "categories": [
+        "deployment",
+        "Automation",
+        "HCL"
+    ],
+    "filePatterns": [
+        "^.*\\.tf$"
+    ]
+}

@@ -1,0 +1,13 @@
+{
+    "name": "Terraform Destroy",
+    "description": "Workflow that runs the terraform destroy command",
+    "iconName": "octicon x-circle-fill",
+    "categories": [
+        "deployment",
+        "Automation",
+        "HCL"
+    ],
+    "filePatterns": [
+        "^.*\\.tf$"
+    ]
+}

@@ -1,0 +1,13 @@
+{
+    "name": "Terraform Plan and Apply",
+    "description": "Workflow that runs the terraform plan and apply commands",
+    "iconName": "octicon upload",
+    "categories": [
+        "deployment",
+        "Automation",
+        "HCL"
+    ],
+    "filePatterns": [
+        "^.*\\.tf$"
+    ]
+}
