@@ -13,9 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      packages: read
       statuses: write
-      id-token: write
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -27,9 +25,8 @@ jobs:
       - name: Azure login
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZURE_CLIENT_ID_STREAMS }}
-          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID_STREAMS }}
+          creds: ${{ secrets.TERRAFORM_RELEASE_CREDS }}
+          allow-no-subscriptions: true
 
       - uses: brocksolutions/action-test-terraform@v1
         with:
