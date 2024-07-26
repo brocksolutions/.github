@@ -3,7 +3,11 @@ name: Build, Test, and Publish a Docker Image
 on:
   push:
     branches: [$default-branch]
-      
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
 
 jobs:
   build:
