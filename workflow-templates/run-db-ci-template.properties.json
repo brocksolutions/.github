@@ -1,0 +1,12 @@
+{
+    "name": "Database Continuous Integration",
+    "description": "Workflow that runs your migrations and tests your database",
+    "iconName": "octicon gear",
+    "categories": [
+        "continuous-integration",
+        "testing"
+    ],
+    "filePatterns": [
+        "^.*\\.sln$"
+    ]
+}

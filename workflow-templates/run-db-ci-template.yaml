@@ -1,0 +1,129 @@
+name: "CI: Run Database Migrations"
+
+on:
+  push:
+    branches: [ $default-branch ]
+      
+
+jobs:
+  build-database-2017:
+    runs-on: ubuntu-latest
+    services:
+      mssql17:
+        image: mcr.microsoft.com/mssql/server:2017-latest
+        ports:
+          - 1433:1433
+        env:
+          ACCEPT_EULA: "Y"
+          MSSQL_SA_PASSWORD: ${{ secrets.SQL_SERVER_PASSWORD }}
+
+    steps:
+      - name: Create Databases
+        run: |
+          for i in {1..10}; do
+              echo "Attempting to create database..."
+              exit_status=0
+              docker run --rm --network ${{ job.services.mssql17.network }} mcr.microsoft.com/mssql-tools:latest /opt/mssql-tools/bin/sqlcmd -S mssql17 -U sa -P ${{ secrets.SQL_SERVER_PASSWORD }} -d master -Q "CREATE DATABASE SmartSuite_Operational;CREATE DATABASE SmartSuite_DW;" || exit_status=$?
+              if [ $exit_status -eq 0 ]
+              then
+                  echo "Database created successfully."
+                  exit 0
+              else
+                  echo "Waiting for SQL Server to come online..."
+                  sleep 1
+              fi
+          done
+          exit 1
+
+      - name: Run Operational Migrate
+        uses: brocksolutions/action-flyway-migrate@v1
+        with:
+          flyway-container: YourFlywayContainerHere
+          container-version: YourFlywayContainerVersionHere
+          sql-server: mssql17
+          sql-database: SmartSuite_Operational
+          sql-username: sa
+          sql-password: ${{ secrets.SQL_SERVER_PASSWORD }}
+          config-file: conf/flyway.conf
+          network: ${{ job.services.mssql17.network }}
+
+  build-database-2019:
+    runs-on: ubuntu-latest
+    services:
+      mssql19:
+        image: mcr.microsoft.com/mssql/server:2019-latest
+        ports:
+          - 1433:1433
+        env:
+          ACCEPT_EULA: "Y"
+          MSSQL_SA_PASSWORD: ${{ secrets.SQL_SERVER_PASSWORD }}
+    steps:
+      - name: Create Databases
+        run: |
+          for i in {1..10}; do
+              echo "Attempting to create database..."
+              exit_status=0
+              docker run --rm --network ${{ job.services.mssql19.network }} mcr.microsoft.com/mssql-tools:latest /opt/mssql-tools/bin/sqlcmd -S mssql19 -U sa -P ${{ secrets.SQL_SERVER_PASSWORD }} -d master -Q "CREATE DATABASE SmartSuite_Operational;CREATE DATABASE SmartSuite_DW;" || exit_status=$?
+              if [ $exit_status -eq 0 ]
+              then
+                  echo "Database created successfully."
+                  exit 0
+              else
+                  echo "Waiting for SQL Server to come online..."
+                  sleep 1
+              fi
+          done
+          exit 1
+
+      - name: Run Operational Migrate
+        uses: brocksolutions/action-flyway-migrate@v1
+        with:
+          flyway-container: YourFlywayContainerHere
+          container-version: YourFlywayContainerVersionHere
+          sql-server: mssql19
+          sql-database: SmartSuite_Operational
+          sql-username: sa
+          sql-password: ${{ secrets.SQL_SERVER_PASSWORD }}
+          config-file: conf/flyway.conf
+          network: ${{ job.services.mssql19.network }}
+
+
+  build-database-2022:
+    runs-on: ubuntu-latest
+    services:
+      mssql22:
+        image: mcr.microsoft.com/mssql/server:2022-latest
+        ports:
+          - 1433:1433
+        env:
+          ACCEPT_EULA: "Y"
+          MSSQL_SA_PASSWORD: ${{ secrets.SQL_SERVER_PASSWORD }}
+    steps:
+      - name: Create Databases
+        run: |
+          for i in {1..10}; do
+              echo "Attempting to create database..."
+              exit_status=0
+              docker run --rm --network ${{ job.services.mssql22.network }} mcr.microsoft.com/mssql-tools:latest /opt/mssql-tools/bin/sqlcmd -S mssql22 -U sa -P ${{ secrets.SQL_SERVER_PASSWORD }} -d master -Q "CREATE DATABASE SmartSuite_Operational;CREATE DATABASE SmartSuite_DW;" || exit_status=$?
+              if [ $exit_status -eq 0 ]
+              then
+                  echo "Database created successfully."
+                  exit 0
+              else
+                  echo "Waiting for SQL Server to come online..."
+                  sleep 1
+              fi
+          done
+          exit 1
+
+      - name: Run Operational Migrate
+        uses: brocksolutions/action-flyway-migrate@v1
+        with:
+          flyway-container: YourFlywayContainerHere
+          container-version: YourFlywayContainerVersionHere
+          sql-server: mssql22
+          sql-database: SmartSuite_Operational
+          sql-username: sa
+          sql-password: ${{ secrets.SQL_SERVER_PASSWORD }}
+          config-file: conf/flyway.conf
+          network: ${{ job.services.mssql22.network }}
