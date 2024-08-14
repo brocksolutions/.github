@@ -23,7 +23,7 @@ jobs:
           for i in {1..10}; do
               echo "Attempting to create database..."
               exit_status=0
-              docker run --rm --network ${{ job.services.mssql17.network }} mcr.microsoft.com/mssql-tools:latest /opt/mssql-tools/bin/sqlcmd -S mssql17 -U sa -P ${{ secrets.SQL_SERVER_PASSWORD }} -d master -Q "CREATE DATABASE SmartSuite_Operational;CREATE DATABASE SmartSuite_DW;" || exit_status=$?
+              docker run --rm --network ${{ job.services.mssql17.network }} brocksolutions/sqlcmd:latest -S mssql17 -U sa -P ${{ secrets.SQL_SERVER_PASSWORD }} -d master -Q "CREATE DATABASE SmartSuite_Operational;CREATE DATABASE SmartSuite_DW;" || exit_status=$?
               if [ $exit_status -eq 0 ]
               then
                   echo "Database created successfully."
@@ -63,7 +63,7 @@ jobs:
           for i in {1..10}; do
               echo "Attempting to create database..."
               exit_status=0
-              docker run --rm --network ${{ job.services.mssql19.network }} mcr.microsoft.com/mssql-tools:latest /opt/mssql-tools/bin/sqlcmd -S mssql19 -U sa -P ${{ secrets.SQL_SERVER_PASSWORD }} -d master -Q "CREATE DATABASE SmartSuite_Operational;CREATE DATABASE SmartSuite_DW;" || exit_status=$?
+              docker run --rm --network ${{ job.services.mssql19.network }} brocksolutions/sqlcmd:latest -S mssql19 -U sa -P ${{ secrets.SQL_SERVER_PASSWORD }} -d master -Q "CREATE DATABASE SmartSuite_Operational;CREATE DATABASE SmartSuite_DW;" || exit_status=$?
               if [ $exit_status -eq 0 ]
               then
                   echo "Database created successfully."
@@ -104,7 +104,7 @@ jobs:
           for i in {1..10}; do
               echo "Attempting to create database..."
               exit_status=0
-              docker run --rm --network ${{ job.services.mssql22.network }} mcr.microsoft.com/mssql-tools:latest /opt/mssql-tools/bin/sqlcmd -S mssql22 -U sa -P ${{ secrets.SQL_SERVER_PASSWORD }} -d master -Q "CREATE DATABASE SmartSuite_Operational;CREATE DATABASE SmartSuite_DW;" || exit_status=$?
+              docker run --rm --network ${{ job.services.mssql22.network }} brocksolutions/sqlcmd:latest -S mssql22 -U sa -P ${{ secrets.SQL_SERVER_PASSWORD }} -d master -Q "CREATE DATABASE SmartSuite_Operational;CREATE DATABASE SmartSuite_DW;" || exit_status=$?
               if [ $exit_status -eq 0 ]
               then
                   echo "Database created successfully."
