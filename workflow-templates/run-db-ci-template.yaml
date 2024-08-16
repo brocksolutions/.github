@@ -18,6 +18,9 @@ jobs:
           MSSQL_SA_PASSWORD: ${{ secrets.SQL_SERVER_PASSWORD }}
 
     steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
       - name: Create Databases
         run: |
           for i in {1..10}; do
@@ -36,16 +39,16 @@ jobs:
           exit 1
 
       - name: Run Operational Migrate
-        uses: brocksolutions/action-flyway-migrate@v1
+        uses: brocksolutions/action-run-flyway@v1
         with:
-          flyway-container: YourFlywayContainerHere
-          container-version: YourFlywayContainerVersionHere
-          sql-server: mssql17
+          flyway-version: latest
+          sql-server: mssql22
           sql-database: SmartSuite_Operational
           sql-username: sa
           sql-password: ${{ secrets.SQL_SERVER_PASSWORD }}
-          config-file: conf/flyway.conf
-          network: ${{ job.services.mssql17.network }}
+          network: ${{ job.services.mssql22.network }}
+          flyway-command: migrate
+          licensed: false
 
   build-database-2019:
     runs-on: ubuntu-latest
@@ -58,6 +61,9 @@ jobs:
           ACCEPT_EULA: "Y"
           MSSQL_SA_PASSWORD: ${{ secrets.SQL_SERVER_PASSWORD }}
     steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
       - name: Create Databases
         run: |
           for i in {1..10}; do
@@ -76,16 +82,16 @@ jobs:
           exit 1
 
       - name: Run Operational Migrate
-        uses: brocksolutions/action-flyway-migrate@v1
+        uses: brocksolutions/action-run-flyway@v1
         with:
-          flyway-container: YourFlywayContainerHere
-          container-version: YourFlywayContainerVersionHere
-          sql-server: mssql19
+          flyway-version: latest
+          sql-server: mssql22
           sql-database: SmartSuite_Operational
           sql-username: sa
           sql-password: ${{ secrets.SQL_SERVER_PASSWORD }}
-          config-file: conf/flyway.conf
-          network: ${{ job.services.mssql19.network }}
+          network: ${{ job.services.mssql22.network }}
+          flyway-command: migrate
+          licensed: false
 
 
   build-database-2022:
@@ -99,6 +105,9 @@ jobs:
           ACCEPT_EULA: "Y"
           MSSQL_SA_PASSWORD: ${{ secrets.SQL_SERVER_PASSWORD }}
     steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
       - name: Create Databases
         run: |
           for i in {1..10}; do
@@ -117,13 +126,13 @@ jobs:
           exit 1
 
       - name: Run Operational Migrate
-        uses: brocksolutions/action-flyway-migrate@v1
+        uses: brocksolutions/action-run-flyway@v1
         with:
-          flyway-container: YourFlywayContainerHere
-          container-version: YourFlywayContainerVersionHere
+          flyway-version: latest
           sql-server: mssql22
           sql-database: SmartSuite_Operational
           sql-username: sa
           sql-password: ${{ secrets.SQL_SERVER_PASSWORD }}
-          config-file: conf/flyway.conf
           network: ${{ job.services.mssql22.network }}
+          flyway-command: migrate
+          licensed: false
