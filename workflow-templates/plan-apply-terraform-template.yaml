@@ -11,7 +11,7 @@ permissions:
 jobs:
   plan:
     name: Terraform Plan
-    runs-on: ubuntu-latest-deployment
+    runs-on: ubuntu-latest-nonprod-deployment
     environment: streams-platform
     steps:
       - name: Checkout
@@ -46,7 +46,7 @@ jobs:
 
   apply:
     name: Terraform Apply
-    runs-on: ubuntu-latest-deployment
+    runs-on: ubuntu-latest-nonprod-deployment
     environment: streams-platform
     needs: plan
     steps:
