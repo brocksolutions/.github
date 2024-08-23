@@ -9,7 +9,7 @@ permissions:
 jobs:
   destroy:
     name: Terraform Destroy
-    runs-on: ubuntu-latest-deployment
+    runs-on: ubuntu-latest-nonprod-deployment
     environment: streams-platform
     steps:
       - name: Checkout
