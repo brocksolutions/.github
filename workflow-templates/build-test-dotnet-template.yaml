@@ -1,4 +1,4 @@
-name: CI workflow
+name: "CI: Build and Test .NET Solution"
 
 on:
   push:
@@ -11,9 +11,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Build .NET App
-        uses: brocksolutions/action-build-test-dotnet@main
+        uses: brocksolutions/action-build-test-dotnet@v2
         with:
           solution-file: your-solution-file.sln

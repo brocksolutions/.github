@@ -1,0 +1,47 @@
+
+name: "CI: Build Docs Site"
+
+on:
+  pull_request:
+    branches: [$default-branch]
+
+jobs:
+  markdown:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js LTS
+        uses: actions/setup-node@v4
+        with:
+          node-version: "lts/*"
+          registry-url: "https://npm.pkg.github.com"
+        env:
+          NODE_AUTH_TOKEN: ${{ github.token }}
+
+      - name: Markdown Lint
+        uses: brocksolutions/action-markdown-lint@v1
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.x
+
+      - name: Set Cache ID
+        run: echo "cache_id=$(date --utc '+%V')" >> $GITHUB_ENV
+
+      - name: Cache MkDocs Build Output
+        uses: actions/cache@v4
+        with:
+          key: mkdocs-material-${{ env.cache_id }}
+          path: .cache
+          restore-keys: |
+            mkdocs-material-
+
+      - name: Install mkdocs-material
+        run: pip install mkdocs-material mkdocs-glightbox
+
+      - name: Build MkDocs Site
+        run: mkdocs build --strict

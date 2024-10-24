@@ -4,13 +4,21 @@ on:
   push:
     branches: [ $default-branch ]
       
+env:
+  DATABASE_NAME: "SmartSuite_Operational"
 
 jobs:
-  build-database-2017:
+  test-database:
+    name: "SQL Server ${{ matrix.sql-version }}"
     runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        sql-version: [ '2017', '2019', '2022' ]
+
     services:
       mssql17:
-        image: mcr.microsoft.com/mssql/server:2017-latest
+        image: mcr.microsoft.com/mssql/server:${{ matrix.sql-version }}-latest
         ports:
           - 1433:1433
         env:
@@ -19,17 +27,17 @@ jobs:
 
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Create Databases
         run: |
           for i in {1..10}; do
               echo "Attempting to create database..."
               exit_status=0
-              docker run --rm --network ${{ job.services.mssql17.network }} brocksolutions/sqlcmd:latest -S mssql17 -U sa -P ${{ secrets.SQL_SERVER_PASSWORD }} -d master -Q "CREATE DATABASE SmartSuite_Operational;CREATE DATABASE SmartSuite_DW;" || exit_status=$?
+              docker run --rm --network ${{ job.services.mssql.network }} ghcr.io/brocksolutions/sqlcmd:latest -S mssql -U sa -P "${{ secrets.SQL_SERVER_PASSWORD }}" -d master -Q "CREATE DATABASE ${{ env.DATABASE_NAME }};" || exit_status=$?
               if [ $exit_status -eq 0 ]
               then
-                  echo "Database created successfully."
+                  echo "Database ${{ env.DATABASE_NAME }} created successfully."
                   exit 0
               else
                   echo "Waiting for SQL Server to come online..."
@@ -42,97 +50,12 @@ jobs:
         uses: brocksolutions/action-run-flyway@v1
         with:
           flyway-version: latest
-          sql-server: mssql22
-          sql-database: SmartSuite_Operational
+          path-to-sql-folder: "/Database/Flyway/sql"
+          path-to-conf-folder: "/Database/Flyway/conf"
+          sql-server: mssql
+          sql-database: ${{ env.DATABASE_NAME }}
           sql-username: sa
           sql-password: ${{ secrets.SQL_SERVER_PASSWORD }}
-          network: ${{ job.services.mssql22.network }}
-          flyway-command: migrate
-          licensed: false
-
-  build-database-2019:
-    runs-on: ubuntu-latest
-    services:
-      mssql19:
-        image: mcr.microsoft.com/mssql/server:2019-latest
-        ports:
-          - 1433:1433
-        env:
-          ACCEPT_EULA: "Y"
-          MSSQL_SA_PASSWORD: ${{ secrets.SQL_SERVER_PASSWORD }}
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2
-
-      - name: Create Databases
-        run: |
-          for i in {1..10}; do
-              echo "Attempting to create database..."
-              exit_status=0
-              docker run --rm --network ${{ job.services.mssql19.network }} brocksolutions/sqlcmd:latest -S mssql19 -U sa -P ${{ secrets.SQL_SERVER_PASSWORD }} -d master -Q "CREATE DATABASE SmartSuite_Operational;CREATE DATABASE SmartSuite_DW;" || exit_status=$?
-              if [ $exit_status -eq 0 ]
-              then
-                  echo "Database created successfully."
-                  exit 0
-              else
-                  echo "Waiting for SQL Server to come online..."
-                  sleep 1
-              fi
-          done
-          exit 1
-
-      - name: Run Operational Migrate
-        uses: brocksolutions/action-run-flyway@v1
-        with:
-          flyway-version: latest
-          sql-server: mssql22
-          sql-database: SmartSuite_Operational
-          sql-username: sa
-          sql-password: ${{ secrets.SQL_SERVER_PASSWORD }}
-          network: ${{ job.services.mssql22.network }}
-          flyway-command: migrate
-          licensed: false
-
-
-  build-database-2022:
-    runs-on: ubuntu-latest
-    services:
-      mssql22:
-        image: mcr.microsoft.com/mssql/server:2022-latest
-        ports:
-          - 1433:1433
-        env:
-          ACCEPT_EULA: "Y"
-          MSSQL_SA_PASSWORD: ${{ secrets.SQL_SERVER_PASSWORD }}
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2
-
-      - name: Create Databases
-        run: |
-          for i in {1..10}; do
-              echo "Attempting to create database..."
-              exit_status=0
-              docker run --rm --network ${{ job.services.mssql22.network }} brocksolutions/sqlcmd:latest -S mssql22 -U sa -P ${{ secrets.SQL_SERVER_PASSWORD }} -d master -Q "CREATE DATABASE SmartSuite_Operational;CREATE DATABASE SmartSuite_DW;" || exit_status=$?
-              if [ $exit_status -eq 0 ]
-              then
-                  echo "Database created successfully."
-                  exit 0
-              else
-                  echo "Waiting for SQL Server to come online..."
-                  sleep 1
-              fi
-          done
-          exit 1
-
-      - name: Run Operational Migrate
-        uses: brocksolutions/action-run-flyway@v1
-        with:
-          flyway-version: latest
-          sql-server: mssql22
-          sql-database: SmartSuite_Operational
-          sql-username: sa
-          sql-password: ${{ secrets.SQL_SERVER_PASSWORD }}
-          network: ${{ job.services.mssql22.network }}
+          network:  ${{ job.services.mssql.network }}
           flyway-command: migrate
           licensed: false

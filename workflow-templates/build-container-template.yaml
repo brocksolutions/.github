@@ -1,25 +1,26 @@
-name: Build, Test, and Publish a Docker Image
+name: "CI: Build Containers"
 
 on:
   push:
     branches: [$default-branch]
 
 permissions:
-  contents: write
-  issues: write
-  pull-requests: write
+  actions: read
+  contents: read
+  packages: read
+  security-events: write
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
       - name: Build .NET App
-        uses: brocksolutions/action-publish-container@main
+        uses: brocksolutions/action-build-container@v3
         with:
           image-name: your-image-name
           dockerfile-path: your-dockerfile-path/Dockerfile

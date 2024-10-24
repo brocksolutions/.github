@@ -1,0 +1,9 @@
+{
+    "name": "CI: Validate Docs",
+    "description": "Builds and validates your documentation",
+    "iconName": "octicon container",
+    "categories": [
+        "deployment",
+        "Pages"
+    ]
+}

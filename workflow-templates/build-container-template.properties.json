@@ -1,6 +1,6 @@
 {
-    "name": "Build and Publish Docker Container Workflow",
-    "description": "Build and publish a Docker container to the GHCR registry",
+    "name": "CI: Build Container Workflow",
+    "description": "CI workflow to validate Docker container builds",
     "iconName": "octicon container",
     "categories": [
         "deployment",

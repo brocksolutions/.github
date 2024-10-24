@@ -1,0 +1,12 @@
+{
+    "name": "CodeQL: Discover Code Vulnerabilities",
+    "description": "Runs CodeQL analysis to discover code vulnerabilities",
+    "iconName": "octicon gear",
+    "categories": [
+        "continuous-integration",
+        "testing"
+    ],
+    "filePatterns": [
+        "^.*\\.sln$"
+    ]
+}
