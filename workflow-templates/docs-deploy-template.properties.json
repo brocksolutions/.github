@@ -1,0 +1,9 @@
+{
+    "name": "Deploy: Build Docs for GitHub Pages",
+    "description": "Builds and Deploys your documentation to GitHub Pages",
+    "iconName": "octicon container",
+    "categories": [
+        "deployment",
+        "Pages"
+    ]
+}

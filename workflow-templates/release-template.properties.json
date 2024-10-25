@@ -1,0 +1,11 @@
+{
+    "name": "Release: Publish Release Artifacts",
+    "description": "Generates a GitHub release and publishes containers to the GitHub Container Registry",
+    "iconName": "octicon container",
+    "categories": [
+        "deployment"
+    ],
+    "filePatterns": [
+        "Dockerfile"
+    ]
+}

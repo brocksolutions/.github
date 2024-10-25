@@ -1,0 +1,55 @@
+# Sample mkdocs-material GitHub pages workflow
+# Copied from https://squidfunk.github.io/mkdocs-material/publishing-your-site/#with-github-actions
+name: "Deploy: Build Docs for GitHub Pages"
+
+on:
+  push:
+    branches: [$default-branch]
+
+permissions:
+  contents: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure Git Credentials
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+
+      - name: Setup Node.js LTS
+        uses: actions/setup-node@v4
+        with:
+          node-version: "lts/*"
+          registry-url: "https://npm.pkg.github.com"
+        env:
+          NODE_AUTH_TOKEN: ${{ github.token }}
+
+      - name: Markdown Lint
+        uses: brocksolutions/action-markdown-lint@v1
+
+      - name: Set Up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.x
+
+      - name: Set Cache ID
+        run: echo "cache_id=$(date --utc '+%V')" >> $GITHUB_ENV
+
+      - name: Cache MkDocs Build Ouput
+        uses: actions/cache@v4
+        with:
+          key: mkdocs-material-${{ env.cache_id }}
+          path: .cache
+          restore-keys: |
+            mkdocs-material-
+
+      - name: Install mkdocs-material
+        run: pip install mkdocs-material mkdocs-glightbox
+
+      - name: Deploy MkDocs to GitHub Pages
+        run: mkdocs gh-deploy --force
